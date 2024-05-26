@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        //pobranie ID każdego potrzebnego elementu
         val main: ConstraintLayout = findViewById(R.id.main)
 
         val homePage: Button = findViewById(R.id.HomeButton)
@@ -57,15 +57,19 @@ class MainActivity : AppCompatActivity() {
 
         val recordList: LinearLayout = findViewById(R.id.RecordList)
 
+        //SharedPreferences
         val sharedPreferences = getSharedPreferences("RECORDS", Context.MODE_PRIVATE)
         var editor = sharedPreferences.edit()
 
+        //Stringi do czasomierzu i tabeli rekordów
         var timerString: String
         var recordString: String
 
         val timerStringBuilder = StringBuilder()
         val recordStringBuilder = StringBuilder()
 
+        //rekordy dla każdego dnia tygodnia
+        var workThisSession = 0
         var mostWorkOnMonday = sharedPreferences.getInt("MondayRecord", 0)
         var mostWorkOnTuesday = sharedPreferences.getInt("TuesdayRecord", 0)
         var mostWorkOnWednesday = sharedPreferences.getInt("WednesdayRecord", 0)
@@ -74,9 +78,11 @@ class MainActivity : AppCompatActivity() {
         var mostWorkOnSaturday = sharedPreferences.getInt("SaturdayRecord", 0)
         var mostWorkOnSunday = sharedPreferences.getInt("SundayRecord", 0)
 
+        //do czasomierza
         var timerSeconds: Int
         var timerMinutes: Int
 
+        //inne zmienne
         var isBreakTime = false
         var countdown: Long = 1500000
         var isTimerRunning = false
@@ -97,10 +103,8 @@ class MainActivity : AppCompatActivity() {
         }
         currentDayOfWeek.text = dayOfTheWeek
 
-        timerStart.setBackgroundColor(Color.parseColor("#845AED"))
-        homePage.setBackgroundColor(Color.parseColor("#845AED"))
-        recordsPage.setBackgroundColor(Color.parseColor("#845AED"))
-
+        //funkcje
+        //wyświetlanie czasu do zakończenia pracy/przerwy
         fun SetTimer(){
             timerSeconds = countdown.toInt() / 1000
             timerMinutes = timerSeconds / 60
@@ -112,7 +116,7 @@ class MainActivity : AppCompatActivity() {
             bigTimer.text = timerString
             smallTimer.text = timerString
         }
-
+        //ustawienie widoku na główny widok
         fun SetHomeView(){
             smallTimer.visibility = View.GONE
             bigTimer.visibility = View.VISIBLE
@@ -122,6 +126,7 @@ class MainActivity : AppCompatActivity() {
             homePage.setBackgroundColor(Color.parseColor("#9b74fc"))
             recordsPage.setBackgroundColor(Color.parseColor("#845AED"))
         }
+        //ustawienie widoku na listę rekordu dla każdego dnia tygodnia
         fun SetRecordsView(){
             bigTimer.visibility = View.GONE
             smallTimer.visibility = View.VISIBLE
@@ -131,7 +136,7 @@ class MainActivity : AppCompatActivity() {
             recordsPage.setBackgroundColor(Color.parseColor("#9b74fc"))
             homePage.setBackgroundColor(Color.parseColor("#845AED"))
         }
-
+        //czy czas na przerwę czy pracę
         fun ifBreakTime(){
             if(isBreakTime == false){
                 countdown = 300000
@@ -144,10 +149,13 @@ class MainActivity : AppCompatActivity() {
                 isBreakTime = false
             }
         }
+        //ustawienie rekordu dla każdego dnia tygodnia
         fun setRecord(){
+            workThisSession += 1
             when(currentDay){
                 2 -> {
-                    mostWorkOnMonday += 1
+                    //poniedziałek
+                    if(workThisSession >= mostWorkOnMonday) mostWorkOnMonday = workThisSession
                     recordStringBuilder.append("Rekord: " + mostWorkOnMonday)
                     recordString = recordStringBuilder.toString()
                     mondayRecord.text = recordString
@@ -157,10 +165,10 @@ class MainActivity : AppCompatActivity() {
                         in 8..Int.MAX_VALUE -> medalMonday.setImageResource(R.drawable.cato)
                     }
                     editor.putInt("MondayRecord", mostWorkOnMonday)
-                    editor.commit()
                 }
                 3 -> {
-                    mostWorkOnTuesday += 1
+                    //wtorek
+                    if(workThisSession >= mostWorkOnTuesday) mostWorkOnTuesday = workThisSession
                     recordStringBuilder.append("Rekord: " + mostWorkOnTuesday)
                     recordString = recordStringBuilder.toString()
                     tuesdayRecord.text = recordString
@@ -169,9 +177,11 @@ class MainActivity : AppCompatActivity() {
                         in 4..7 -> medalTuesday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
                         in 8..Int.MAX_VALUE -> medalTuesday.setImageResource(R.drawable.cato)
                     }
+                    editor.putInt("TuesdayRecord", mostWorkOnTuesday)
                 }
+                //środa
                 4 -> {
-                    mostWorkOnWednesday += 1
+                    if(workThisSession >= mostWorkOnWednesday) mostWorkOnWednesday = workThisSession
                     recordStringBuilder.append("Rekord: " + mostWorkOnWednesday)
                     recordString = recordStringBuilder.toString()
                     wednesdayRecord.text = recordString
@@ -180,9 +190,11 @@ class MainActivity : AppCompatActivity() {
                         in 4..7 -> medalWednesday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
                         in 8..Int.MAX_VALUE -> medalWednesday.setImageResource(R.drawable.cato)
                     }
+                    editor.putInt("WednesdayRecord", mostWorkOnWednesday)
                 }
+                //czwartek
                 5 -> {
-                    mostWorkOnThursday += 1
+                    if(workThisSession >= mostWorkOnThursday) mostWorkOnThursday = workThisSession
                     recordStringBuilder.append("Rekord: " + mostWorkOnThursday)
                     recordString = recordStringBuilder.toString()
                     thursdayRecord.text = recordString
@@ -191,9 +203,11 @@ class MainActivity : AppCompatActivity() {
                         in 4..7 -> medalThursday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
                         in 8..Int.MAX_VALUE -> medalThursday.setImageResource(R.drawable.cato)
                     }
+                    editor.putInt("ThursdayRecord", mostWorkOnThursday)
                 }
+                //piątek
                 6 -> {
-                    mostWorkOnFriday += 1
+                    if(workThisSession >= mostWorkOnFriday) mostWorkOnFriday = workThisSession
                     recordStringBuilder.append("Rekord: " + mostWorkOnFriday)
                     recordString = recordStringBuilder.toString()
                     fridayRecord.text = recordString
@@ -202,9 +216,11 @@ class MainActivity : AppCompatActivity() {
                         in 4..7 -> medalFriday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
                         in 8..Int.MAX_VALUE -> medalFriday.setImageResource(R.drawable.cato)
                     }
+                    editor.putInt("FridayRecord", mostWorkOnFriday)
                 }
+                //sobota
                 0 -> {
-                    mostWorkOnSaturday += 1
+                    if(workThisSession >= mostWorkOnSaturday) mostWorkOnSaturday = workThisSession
                     recordStringBuilder.append("Rekord: " + mostWorkOnSaturday)
                     recordString = recordStringBuilder.toString()
                     saturdayRecord.text = recordString
@@ -213,9 +229,11 @@ class MainActivity : AppCompatActivity() {
                         in 4..7 -> medalSaturday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
                         in 8..Int.MAX_VALUE -> medalSaturday.setImageResource(R.drawable.cato)
                     }
+                    editor.putInt("SaturdayRecord", mostWorkOnSaturday)
                 }
+                //niedziela
                 1 -> {
-                    mostWorkOnSunday += 1
+                    if(workThisSession >= mostWorkOnSunday) mostWorkOnSunday = workThisSession
                     recordStringBuilder.append("Rekord: " + mostWorkOnSunday)
                     recordString = recordStringBuilder.toString()
                     sundayRecord.text = recordString
@@ -224,15 +242,31 @@ class MainActivity : AppCompatActivity() {
                         in 4..7 -> medalSunday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
                         in 8..Int.MAX_VALUE -> medalSunday.setImageResource(R.drawable.cato)
                     }
+                    editor.putInt("SundayRecord", mostWorkOnSunday)
                 }
                 else -> {}
             }
+            editor.apply()
             recordStringBuilder.clear()
         }
 
+        //ustawienie elementów UI przy zakończeniu czasomierza
+        fun uiUponCompletion(){
+            timerStart.setText("START")
+            main.setBackgroundColor(Color.parseColor("#DED9FF"))
+            timerStart.setBackgroundColor(Color.parseColor("#845AED"))
+        }
+
+        //operacje do zrobienia przy otwarciu aplikacji
         SetHomeView()
         SetTimer()
 
+        timerStart.setBackgroundColor(Color.parseColor("#845AED"))
+        homePage.setBackgroundColor(Color.parseColor("#845AED"))
+        recordsPage.setBackgroundColor(Color.parseColor("#845AED"))
+
+        //czasomierze
+        //praca
         val workTimer = object: CountDownTimer(1000/*1500000*/, 1000){
             override fun onTick(millisUntilFinished: Long) {
                 SetTimer()
@@ -241,12 +275,11 @@ class MainActivity : AppCompatActivity() {
             override fun onFinish() {
                 ifBreakTime()
                 isTimerRunning = false
-                timerStart.setText("START")
                 setRecord()
-                main.setBackgroundColor(Color.parseColor("#DED9FF"))
-                timerStart.setBackgroundColor(Color.parseColor("#845AED"))
+                uiUponCompletion()
             }
         }
+        //przerwa
         val breakTimer = object: CountDownTimer(300000, 1000){
             override fun onTick(millisUntilFinished: Long) {
                 SetTimer()
@@ -255,11 +288,10 @@ class MainActivity : AppCompatActivity() {
             override fun onFinish() {
                 ifBreakTime()
                 isTimerRunning = false
-                timerStart.setText("START")
-                main.setBackgroundColor(Color.parseColor("#DED9FF"))
-                timerStart.setBackgroundColor(Color.parseColor("#845AED"))
+                uiUponCompletion()
             }
         }
+        //funkcja od rozpoczęcia czasomierza
         fun startTimer(){
             if(isBreakTime == false){
                 workTimer.start()
@@ -273,12 +305,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        //przyciski od zmiany widoku
         homePage.setOnClickListener({
             SetHomeView()
         })
         recordsPage.setOnClickListener({
             SetRecordsView()
         })
+        //przycisk od aktywowania/zatrzymywania czasomierza
         timerStart.setOnClickListener({
             if(isTimerRunning == false){
                 isTimerRunning = true
@@ -287,13 +321,11 @@ class MainActivity : AppCompatActivity() {
             }
             else{
                 isTimerRunning = false
-                timerStart.setText("START")
                 workTimer.cancel()
                 breakTimer.cancel()
                 ifBreakTime()
                 SetTimer()
-                main.setBackgroundColor(Color.parseColor("#DED9FF"))
-                timerStart.setBackgroundColor(Color.parseColor("#845AED"))
+                uiUponCompletion()
             }
         })
     }
