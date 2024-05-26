@@ -5,6 +5,7 @@ import android.os.CountDownTimer
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -34,16 +35,39 @@ class MainActivity : AppCompatActivity() {
         val currentDayOfWeek: TextView = findViewById(R.id.dayOfWeek)
 
         val medalMonday: ImageView = findViewById(R.id.medalMonday)
+        val medalTuesday: ImageView = findViewById(R.id.medalTuesday)
+        val medalWednesday: ImageView = findViewById(R.id.medalWednesday)
+        val medalThursday: ImageView = findViewById(R.id.medalThursday)
+        val medalFriday: ImageView = findViewById(R.id.medalFriday)
+        val medalSaturday: ImageView = findViewById(R.id.medalSaturday)
+        val medalSunday: ImageView  = findViewById(R.id.medalSunday)
 
-        val mondaysRecord: TextView = findViewById(R.id.RecordSessionsMonday)
+        val mondayRecord: TextView = findViewById(R.id.RecordSessionsMonday)
+        val tuesdayRecord: TextView = findViewById(R.id.RecordSessionsTuesday)
+        val wednesdayRecord: TextView = findViewById(R.id.RecordSessionsWednesday)
+        val thursdayRecord: TextView = findViewById(R.id.RecordSessionsThursday)
+        val fridayRecord: TextView = findViewById(R.id.RecordSessionsFriday)
+        val saturdayRecord: TextView = findViewById(R.id.RecordSessionsSaturday)
+        val sundayRecord: TextView = findViewById(R.id.RecordSessionsSunday)
+
+        val recordList: LinearLayout = findViewById(R.id.RecordList)
+
+        var timerString: String
+        var recordString: String
+
+        val timerStringBuilder = StringBuilder()
+        val recordStringBuilder = StringBuilder()
+
+        var mostWorkOnMonday = 0
+        var mostWorkOnTuesday = 0
+        var mostWorkOnWednesday = 0
+        var mostWorkOnThursday = 0
+        var mostWorkOnFriday = 0
+        var mostWorkOnSaturday = 0
+        var mostWorkOnSunday = 0
 
         var timerSeconds: Int
         var timerMinutes: Int
-
-        var mostWorkOnMonday = 0
-
-        var timerString: String
-        val timerStringBuilder = StringBuilder()
 
         var isBreakTime = false
         var countdown: Long = 1500000
@@ -81,12 +105,14 @@ class MainActivity : AppCompatActivity() {
             bigTimer.visibility = View.VISIBLE
             timerStart.visibility = View.VISIBLE
             currentDayOfWeek.visibility = View.GONE
+            recordList.visibility = View.GONE
         }
         fun SetRecordsView(){
             bigTimer.visibility = View.GONE
             smallTimer.visibility = View.VISIBLE
             timerStart.visibility = View.GONE
             currentDayOfWeek.visibility = View.VISIBLE
+            recordList.visibility = View.VISIBLE
         }
 
         fun ifBreakTime(){
@@ -101,11 +127,94 @@ class MainActivity : AppCompatActivity() {
                 isBreakTime = false
             }
         }
+        fun setRecord(){
+            when(currentDay){
+                2 -> {
+                    mostWorkOnMonday += 1
+                    recordStringBuilder.append("Rekord: " + mostWorkOnMonday)
+                    recordString = recordStringBuilder.toString()
+                    mondayRecord.text = recordString
+                    when(mostWorkOnMonday){
+                        in 0..3 -> medalMonday.setImageResource(R.drawable.pizza_time)
+                        in 4..7 -> medalMonday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
+                        in 8..Int.MAX_VALUE -> medalMonday.setImageResource(R.drawable.cato)
+                    }
+                }
+                3 -> {
+                    mostWorkOnTuesday += 1
+                    recordStringBuilder.append("Rekord: " + mostWorkOnTuesday)
+                    recordString = recordStringBuilder.toString()
+                    tuesdayRecord.text = recordString
+                    when(mostWorkOnTuesday){
+                        in 0..3 -> medalTuesday.setImageResource(R.drawable.pizza_time)
+                        in 4..7 -> medalTuesday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
+                        in 8..Int.MAX_VALUE -> medalTuesday.setImageResource(R.drawable.cato)
+                    }
+                }
+                4 -> {
+                    mostWorkOnWednesday += 1
+                    recordStringBuilder.append("Rekord: " + mostWorkOnWednesday)
+                    recordString = recordStringBuilder.toString()
+                    wednesdayRecord.text = recordString
+                    when(mostWorkOnWednesday){
+                        in 0..3 -> medalWednesday.setImageResource(R.drawable.pizza_time)
+                        in 4..7 -> medalWednesday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
+                        in 8..Int.MAX_VALUE -> medalWednesday.setImageResource(R.drawable.cato)
+                    }
+                }
+                5 -> {
+                    mostWorkOnThursday += 1
+                    recordStringBuilder.append("Rekord: " + mostWorkOnThursday)
+                    recordString = recordStringBuilder.toString()
+                    thursdayRecord.text = recordString
+                    when(mostWorkOnThursday){
+                        in 0..3 -> medalThursday.setImageResource(R.drawable.pizza_time)
+                        in 4..7 -> medalThursday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
+                        in 8..Int.MAX_VALUE -> medalThursday.setImageResource(R.drawable.cato)
+                    }
+                }
+                6 -> {
+                    mostWorkOnFriday += 1
+                    recordStringBuilder.append("Rekord: " + mostWorkOnFriday)
+                    recordString = recordStringBuilder.toString()
+                    fridayRecord.text = recordString
+                    when(mostWorkOnFriday){
+                        in 0..3 -> medalFriday.setImageResource(R.drawable.pizza_time)
+                        in 4..7 -> medalFriday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
+                        in 8..Int.MAX_VALUE -> medalFriday.setImageResource(R.drawable.cato)
+                    }
+                }
+                0 -> {
+                    mostWorkOnSaturday += 1
+                    recordStringBuilder.append("Rekord: " + mostWorkOnSaturday)
+                    recordString = recordStringBuilder.toString()
+                    saturdayRecord.text = recordString
+                    when(mostWorkOnSaturday){
+                        in 0..3 -> medalSaturday.setImageResource(R.drawable.pizza_time)
+                        in 4..7 -> medalSaturday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
+                        in 8..Int.MAX_VALUE -> medalSaturday.setImageResource(R.drawable.cato)
+                    }
+                }
+                1 -> {
+                    mostWorkOnSunday += 1
+                    recordStringBuilder.append("Rekord: " + mostWorkOnSunday)
+                    recordString = recordStringBuilder.toString()
+                    sundayRecord.text = recordString
+                    when(mostWorkOnSunday){
+                        in 0..3 -> medalSunday.setImageResource(R.drawable.pizza_time)
+                        in 4..7 -> medalSunday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
+                        in 8..Int.MAX_VALUE -> medalSunday.setImageResource(R.drawable.cato)
+                    }
+                }
+                else -> {}
+            }
+            recordStringBuilder.clear()
+        }
 
         SetHomeView()
         SetTimer()
 
-        val workTimer = object: CountDownTimer(1500/*000*/, 1000){
+        val workTimer = object: CountDownTimer(1000/*1500000*/, 1000){
             override fun onTick(millisUntilFinished: Long) {
                 SetTimer()
                 countdown = millisUntilFinished
@@ -114,11 +223,7 @@ class MainActivity : AppCompatActivity() {
                 ifBreakTime()
                 isTimerRunning = false
                 timerStart.setText("START")
-                mostWorkOnMonday += 1
-                mondaysRecord.text = mostWorkOnMonday.toString()
-                if(mostWorkOnMonday >= 4){
-                    medalMonday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
-                }
+                setRecord()
             }
         }
         val breakTimer = object: CountDownTimer(300000, 1000){

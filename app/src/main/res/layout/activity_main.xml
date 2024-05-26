@@ -18,7 +18,6 @@
         android:text="XX:XX"
         android:textAlignment="center"
         android:textSize="100sp"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +32,6 @@
         android:layout_marginBottom="180dp"
         android:text="START"
         android:textSize="70sp"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -72,29 +70,295 @@
         android:id="@+id/dayOfWeek"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="56dp"
         android:text="TextView"
         android:textSize="25sp"
         app:layout_constraintStart_toEndOf="@+id/TimerView2"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/RecordSessionsMonday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="216dp"
-        android:layout_marginTop="150dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/RecordList"
+        android:layout_width="350dp"
+        android:layout_height="500dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/medalMonday"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:srcCompat="@drawable/pizza_time"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="100dp" />
+        <LinearLayout
+            android:id="@+id/RecordListImageViews"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/medalMonday"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:srcCompat="@drawable/pizza_time" />
+
+            <ImageView
+                android:id="@+id/medalTuesday"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:srcCompat="@drawable/pizza_time" />
+
+            <ImageView
+                android:id="@+id/medalWednesday"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:srcCompat="@drawable/pizza_time" />
+
+            <ImageView
+                android:id="@+id/medalThursday"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:srcCompat="@drawable/pizza_time" />
+
+            <ImageView
+                android:id="@+id/medalFriday"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:srcCompat="@drawable/pizza_time" />
+
+            <ImageView
+                android:id="@+id/medalSaturday"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:srcCompat="@drawable/pizza_time" />
+
+            <ImageView
+                android:id="@+id/medalSunday"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:srcCompat="@drawable/pizza_time" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/RecordListTextViews"
+            android:layout_width="340dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/padding1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="5sp" />
+
+            <TextView
+                android:id="@+id/Monday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Poniedziałek"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/padding2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="4sp" />
+
+            <TextView
+                android:id="@+id/RecordSessionsMonday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rekord: 0" />
+
+            <TextView
+                android:id="@+id/padding3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="2sp" />
+
+            <TextView
+                android:id="@+id/padding4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="4sp" />
+
+            <TextView
+                android:id="@+id/Tuesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Wtorek"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/padding5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="4sp" />
+
+            <TextView
+                android:id="@+id/RecordSessionsTuesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rekord: 0" />
+
+            <TextView
+                android:id="@+id/padding6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="2sp" />
+
+            <TextView
+                android:id="@+id/padding7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="4sp" />
+
+            <TextView
+                android:id="@+id/Wednesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Środa"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/padding8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="4sp" />
+
+            <TextView
+                android:id="@+id/RecordSessionsWednesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rekord: 0" />
+
+            <TextView
+                android:id="@+id/padding9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="2sp" />
+
+            <TextView
+                android:id="@+id/padding10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="7sp" />
+
+            <TextView
+                android:id="@+id/Thursday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Czwartek"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/padding11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="4sp" />
+
+            <TextView
+                android:id="@+id/RecordSessionsThursday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rekord: 0" />
+
+            <TextView
+                android:id="@+id/padding12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="2sp" />
+
+            <TextView
+                android:id="@+id/padding13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="7sp" />
+
+            <TextView
+                android:id="@+id/Friday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Piątek"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/padding14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="4sp" />
+
+            <TextView
+                android:id="@+id/RecordSessionsFriday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rekord: 0" />
+
+            <TextView
+                android:id="@+id/padding15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="2sp" />
+
+            <TextView
+                android:id="@+id/padding16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="7sp" />
+
+            <TextView
+                android:id="@+id/Saturday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sobota"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/padding17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="4sp" />
+
+            <TextView
+                android:id="@+id/RecordSessionsSaturday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rekord: 0" />
+
+            <TextView
+                android:id="@+id/padding18"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="2sp" />
+
+            <TextView
+                android:id="@+id/padding19"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="5sp" />
+
+            <TextView
+                android:id="@+id/Sunday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Niedziela"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/padding20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="4sp" />
+
+            <TextView
+                android:id="@+id/RecordSessionsSunday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rekord: 0" />
+
+            <TextView
+                android:id="@+id/padding21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="2sp" />
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
