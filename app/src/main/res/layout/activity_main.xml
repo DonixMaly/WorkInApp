@@ -85,7 +85,7 @@
         android:layout_marginTop="120dp"
         android:layout_marginEnd="30dp"
         android:orientation="horizontal"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -99,43 +99,43 @@
                 android:id="@+id/medalMonday"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                app:srcCompat="@drawable/pizza_time" />
+                app:srcCompat="@drawable/nomedal" />
 
             <ImageView
                 android:id="@+id/medalTuesday"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                app:srcCompat="@drawable/pizza_time" />
+                app:srcCompat="@drawable/nomedal" />
 
             <ImageView
                 android:id="@+id/medalWednesday"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                app:srcCompat="@drawable/pizza_time" />
+                app:srcCompat="@drawable/nomedal" />
 
             <ImageView
                 android:id="@+id/medalThursday"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                app:srcCompat="@drawable/pizza_time" />
+                app:srcCompat="@drawable/nomedal" />
 
             <ImageView
                 android:id="@+id/medalFriday"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                app:srcCompat="@drawable/pizza_time" />
+                app:srcCompat="@drawable/nomedal" />
 
             <ImageView
                 android:id="@+id/medalSaturday"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                app:srcCompat="@drawable/pizza_time" />
+                app:srcCompat="@drawable/nomedal" />
 
             <ImageView
                 android:id="@+id/medalSunday"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                app:srcCompat="@drawable/pizza_time" />
+                app:srcCompat="@drawable/nomedal" />
         </LinearLayout>
 
         <LinearLayout

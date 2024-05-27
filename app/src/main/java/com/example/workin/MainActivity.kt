@@ -2,6 +2,7 @@ package com.example.workin
 
 import android.content.Context
 import android.graphics.Color
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
@@ -57,9 +59,33 @@ class MainActivity : AppCompatActivity() {
 
         val recordList: LinearLayout = findViewById(R.id.RecordList)
 
+        //Przechwycenie dzisiejszego dnia tygodnia
+        val calendar = Calendar.getInstance()
+
+        val currentDay = calendar.get(Calendar.DAY_OF_WEEK)
+
+        val dayOfTheWeek = when(currentDay){
+            2 -> "Dziś jest poniedziałek"
+            3 -> "Dziś jest Wtorek"
+            4 -> "Dziś jest Środa"
+            5 -> "Dziś jest Czwartek"
+            6 -> "Dziś jest Piątek"
+            0 -> "Dziś jest Sobota"
+            1 -> "Dziś jest Niedziela"
+            else -> "Brak daty"
+        }
+        currentDayOfWeek.text = dayOfTheWeek
+
         //SharedPreferences
         val sharedPreferences = getSharedPreferences("RECORDS", Context.MODE_PRIVATE)
-        var editor = sharedPreferences.edit()
+        val editor = sharedPreferences.edit()
+
+        //resetuje rekordy każdego dnia tygodnia w poniedziałek
+        //jak się ponownie otworzy apke w poniedziałek to
+        if(currentDay == 2){
+            editor.clear()
+            editor.apply()
+        }
 
         //Stringi do czasomierzu i tabeli rekordów
         var timerString: String
@@ -81,27 +107,20 @@ class MainActivity : AppCompatActivity() {
         //do czasomierza
         var timerSeconds: Int
         var timerMinutes: Int
-
-        //inne zmienne
         var isBreakTime = false
         var countdown: Long = 1500000
         var isTimerRunning = false
 
-        val calendar = Calendar.getInstance()
+        //alertDialog
+        val alertBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
+        val messageWork = "Po wciśnięciu \"Tak\" obecnie w trakcie pomodoro nie zaliczy się do dzisiaj zrobionych pomodoro.\n" +
+                "Czy jesteś pewien, że chcesz kontynuować?"
+        val messageBreak = "Po wciśnięciu \"Tak\" pominiesz przerwę i będziesz musiał(a) zrobić kolejne pomodoro, aby dostać się do kolejnej przerwy.\n" +
+                "Czy jesteś pewien, że chcesz kontynuować?"
+        var message = ""
 
-        var currentDay = calendar.get(Calendar.DAY_OF_WEEK)
-
-        var dayOfTheWeek = when(currentDay){
-            2 -> "Dziś jest poniedziałek"
-            3 -> "Dziś jest Wtorek"
-            4 -> "Dziś jest Środa"
-            5 -> "Dziś jest Czwartek"
-            6 -> "Dziś jest Piątek"
-            0 -> "Dziś jest Sobota"
-            1 -> "Dziś jest Niedziela"
-            else -> "Brak daty"
-        }
-        currentDayOfWeek.text = dayOfTheWeek
+        //manager wifi
+        val wifiManager = this.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
         //funkcje
         //wyświetlanie czasu do zakończenia pracy/przerwy
@@ -151,7 +170,6 @@ class MainActivity : AppCompatActivity() {
         }
         //ustawienie rekordu dla każdego dnia tygodnia
         fun setRecord(){
-            workThisSession += 1
             when(currentDay){
                 2 -> {
                     //poniedziałek
@@ -160,9 +178,10 @@ class MainActivity : AppCompatActivity() {
                     recordString = recordStringBuilder.toString()
                     mondayRecord.text = recordString
                     when(mostWorkOnMonday){
-                        in 0..3 -> medalMonday.setImageResource(R.drawable.pizza_time)
-                        in 4..7 -> medalMonday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
-                        in 8..Int.MAX_VALUE -> medalMonday.setImageResource(R.drawable.cato)
+                        in 0..3 -> medalMonday.setImageResource(R.drawable.nomedal)
+                        in 4..7 -> medalMonday.setImageResource(R.drawable.bronzemedal)
+                        in 8..15 -> medalMonday.setImageResource(R.drawable.silvermedal)
+                        in 16..Int.MAX_VALUE -> medalMonday.setImageResource(R.drawable.goldmedal)
                     }
                     editor.putInt("MondayRecord", mostWorkOnMonday)
                 }
@@ -173,9 +192,10 @@ class MainActivity : AppCompatActivity() {
                     recordString = recordStringBuilder.toString()
                     tuesdayRecord.text = recordString
                     when(mostWorkOnTuesday){
-                        in 0..3 -> medalTuesday.setImageResource(R.drawable.pizza_time)
-                        in 4..7 -> medalTuesday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
-                        in 8..Int.MAX_VALUE -> medalTuesday.setImageResource(R.drawable.cato)
+                        in 0..3 -> medalTuesday.setImageResource(R.drawable.nomedal)
+                        in 4..7 -> medalTuesday.setImageResource(R.drawable.bronzemedal)
+                        in 8..15 -> medalTuesday.setImageResource(R.drawable.silvermedal)
+                        in 16..Int.MAX_VALUE -> medalTuesday.setImageResource(R.drawable.goldmedal)
                     }
                     editor.putInt("TuesdayRecord", mostWorkOnTuesday)
                 }
@@ -186,9 +206,10 @@ class MainActivity : AppCompatActivity() {
                     recordString = recordStringBuilder.toString()
                     wednesdayRecord.text = recordString
                     when(mostWorkOnWednesday){
-                        in 0..3 -> medalWednesday.setImageResource(R.drawable.pizza_time)
-                        in 4..7 -> medalWednesday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
-                        in 8..Int.MAX_VALUE -> medalWednesday.setImageResource(R.drawable.cato)
+                        in 0..3 -> medalWednesday.setImageResource(R.drawable.nomedal)
+                        in 4..7 -> medalWednesday.setImageResource(R.drawable.bronzemedal)
+                        in 8..15 -> medalWednesday.setImageResource(R.drawable.silvermedal)
+                        in 16..Int.MAX_VALUE -> medalWednesday.setImageResource(R.drawable.goldmedal)
                     }
                     editor.putInt("WednesdayRecord", mostWorkOnWednesday)
                 }
@@ -199,9 +220,10 @@ class MainActivity : AppCompatActivity() {
                     recordString = recordStringBuilder.toString()
                     thursdayRecord.text = recordString
                     when(mostWorkOnThursday){
-                        in 0..3 -> medalThursday.setImageResource(R.drawable.pizza_time)
-                        in 4..7 -> medalThursday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
-                        in 8..Int.MAX_VALUE -> medalThursday.setImageResource(R.drawable.cato)
+                        in 0..3 -> medalThursday.setImageResource(R.drawable.nomedal)
+                        in 4..7 -> medalThursday.setImageResource(R.drawable.bronzemedal)
+                        in 8..15 -> medalThursday.setImageResource(R.drawable.silvermedal)
+                        in 16..Int.MAX_VALUE -> medalThursday.setImageResource(R.drawable.goldmedal)
                     }
                     editor.putInt("ThursdayRecord", mostWorkOnThursday)
                 }
@@ -212,9 +234,10 @@ class MainActivity : AppCompatActivity() {
                     recordString = recordStringBuilder.toString()
                     fridayRecord.text = recordString
                     when(mostWorkOnFriday){
-                        in 0..3 -> medalFriday.setImageResource(R.drawable.pizza_time)
-                        in 4..7 -> medalFriday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
-                        in 8..Int.MAX_VALUE -> medalFriday.setImageResource(R.drawable.cato)
+                        in 0..3 -> medalFriday.setImageResource(R.drawable.nomedal)
+                        in 4..7 -> medalFriday.setImageResource(R.drawable.bronzemedal)
+                        in 8..15 -> medalFriday.setImageResource(R.drawable.silvermedal)
+                        in 16..Int.MAX_VALUE -> medalFriday.setImageResource(R.drawable.goldmedal)
                     }
                     editor.putInt("FridayRecord", mostWorkOnFriday)
                 }
@@ -225,9 +248,10 @@ class MainActivity : AppCompatActivity() {
                     recordString = recordStringBuilder.toString()
                     saturdayRecord.text = recordString
                     when(mostWorkOnSaturday){
-                        in 0..3 -> medalSaturday.setImageResource(R.drawable.pizza_time)
-                        in 4..7 -> medalSaturday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
-                        in 8..Int.MAX_VALUE -> medalSaturday.setImageResource(R.drawable.cato)
+                        in 0..3 -> medalSaturday.setImageResource(R.drawable.nomedal)
+                        in 4..7 -> medalSaturday.setImageResource(R.drawable.bronzemedal)
+                        in 8..15 -> medalSaturday.setImageResource(R.drawable.silvermedal)
+                        in 16..Int.MAX_VALUE -> medalSaturday.setImageResource(R.drawable.goldmedal)
                     }
                     editor.putInt("SaturdayRecord", mostWorkOnSaturday)
                 }
@@ -238,9 +262,10 @@ class MainActivity : AppCompatActivity() {
                     recordString = recordStringBuilder.toString()
                     sundayRecord.text = recordString
                     when(mostWorkOnSunday){
-                        in 0..3 -> medalSunday.setImageResource(R.drawable.pizza_time)
-                        in 4..7 -> medalSunday.setImageResource(R.drawable.screenshot_from_2024_03_17_12_54_47)
-                        in 8..Int.MAX_VALUE -> medalSunday.setImageResource(R.drawable.cato)
+                        in 0..3 -> medalSunday.setImageResource(R.drawable.nomedal)
+                        in 4..7 -> medalSunday.setImageResource(R.drawable.bronzemedal)
+                        in 8..15 -> medalSunday.setImageResource(R.drawable.silvermedal)
+                        in 16..Int.MAX_VALUE -> medalSunday.setImageResource(R.drawable.goldmedal)
                     }
                     editor.putInt("SundayRecord", mostWorkOnSunday)
                 }
@@ -260,6 +285,7 @@ class MainActivity : AppCompatActivity() {
         //operacje do zrobienia przy otwarciu aplikacji
         SetHomeView()
         SetTimer()
+        setRecord()
 
         timerStart.setBackgroundColor(Color.parseColor("#845AED"))
         homePage.setBackgroundColor(Color.parseColor("#845AED"))
@@ -267,14 +293,16 @@ class MainActivity : AppCompatActivity() {
 
         //czasomierze
         //praca
-        val workTimer = object: CountDownTimer(1000/*1500000*/, 1000){
+        val workTimer = object: CountDownTimer(3000/*1500000*/, 1000){
             override fun onTick(millisUntilFinished: Long) {
                 SetTimer()
                 countdown = millisUntilFinished
+                wifiManager.isWifiEnabled = false
             }
             override fun onFinish() {
                 ifBreakTime()
                 isTimerRunning = false
+                workThisSession += 1
                 setRecord()
                 uiUponCompletion()
             }
@@ -316,16 +344,29 @@ class MainActivity : AppCompatActivity() {
         timerStart.setOnClickListener({
             if(isTimerRunning == false){
                 isTimerRunning = true
-                timerStart.setText("STOP")
+                timerStart.setText("POMIŃ")
                 startTimer()
             }
             else{
-                isTimerRunning = false
-                workTimer.cancel()
-                breakTimer.cancel()
-                ifBreakTime()
-                SetTimer()
-                uiUponCompletion()
+                //tworzony jest alert potwierdzający decyzję użytkownika na pominięcie pracy/przerwy
+                if(isBreakTime != true) message = messageWork
+                else message = messageBreak
+                alertBuilder
+                    .setTitle("Czy masz pewność?")
+                    .setMessage(message)
+                    .setPositiveButton("Tak") { dialog, which ->
+                        isTimerRunning = false
+                        workTimer.cancel()
+                        breakTimer.cancel()
+                        ifBreakTime()
+                        SetTimer()
+                        uiUponCompletion()
+                    }
+                    .setNegativeButton("Nie") {dialog, which ->
+
+                    }
+                val dialog: AlertDialog = alertBuilder.create()
+                dialog.show()
             }
         })
     }
