@@ -1,7 +1,9 @@
 package com.example.workin
 
+import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Color
+import android.media.Image
 import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         val medalFriday: ImageView = findViewById(R.id.medalFriday)
         val medalSaturday: ImageView = findViewById(R.id.medalSaturday)
         val medalSunday: ImageView  = findViewById(R.id.medalSunday)
+        val medalWeek: ImageView = findViewById(R.id.medalWeek)
 
         val mondayRecord: TextView = findViewById(R.id.RecordSessionsMonday)
         val tuesdayRecord: TextView = findViewById(R.id.RecordSessionsTuesday)
@@ -56,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         val fridayRecord: TextView = findViewById(R.id.RecordSessionsFriday)
         val saturdayRecord: TextView = findViewById(R.id.RecordSessionsSaturday)
         val sundayRecord: TextView = findViewById(R.id.RecordSessionsSunday)
+        val weekRecord: TextView = findViewById(R.id.wholeWeekRecord)
 
         val recordList: LinearLayout = findViewById(R.id.RecordList)
 
@@ -63,18 +67,6 @@ class MainActivity : AppCompatActivity() {
         val calendar = Calendar.getInstance()
 
         val currentDay = calendar.get(Calendar.DAY_OF_WEEK)
-
-        val dayOfTheWeek = when(currentDay){
-            2 -> "Dziś jest poniedziałek"
-            3 -> "Dziś jest Wtorek"
-            4 -> "Dziś jest Środa"
-            5 -> "Dziś jest Czwartek"
-            6 -> "Dziś jest Piątek"
-            0 -> "Dziś jest Sobota"
-            1 -> "Dziś jest Niedziela"
-            else -> "Brak daty"
-        }
-        currentDayOfWeek.text = dayOfTheWeek
 
         //SharedPreferences
         val sharedPreferences = getSharedPreferences("RECORDS", Context.MODE_PRIVATE)
@@ -103,6 +95,7 @@ class MainActivity : AppCompatActivity() {
         var mostWorkOnFriday = sharedPreferences.getInt("FridayRecord", 0)
         var mostWorkOnSaturday = sharedPreferences.getInt("SaturdayRecord", 0)
         var mostWorkOnSunday = sharedPreferences.getInt("SundayRecord", 0)
+        var workDoneThisWeek: Int
 
         //do czasomierza
         var timerSeconds: Int
@@ -128,8 +121,8 @@ class MainActivity : AppCompatActivity() {
             timerSeconds = countdown.toInt() / 1000
             timerMinutes = timerSeconds / 60
             timerSeconds = timerSeconds - (timerMinutes * 60)
-            timerStringBuilder.append(timerMinutes).append(":").append(timerSeconds)
-            if(timerSeconds < 9) timerStringBuilder.append("0")
+            if(timerSeconds < 9) timerStringBuilder.append(timerMinutes).append(":").append("0").append(timerSeconds)
+            else timerStringBuilder.append(timerMinutes).append(":").append(timerSeconds)
             timerString = timerStringBuilder.toString()
             timerStringBuilder.clear()
             bigTimer.text = timerString
@@ -142,8 +135,8 @@ class MainActivity : AppCompatActivity() {
             timerStart.visibility = View.VISIBLE
             currentDayOfWeek.visibility = View.GONE
             recordList.visibility = View.GONE
-            homePage.setBackgroundColor(Color.parseColor("#9b74fc"))
-            recordsPage.setBackgroundColor(Color.parseColor("#845AED"))
+            weekRecord.visibility = View.GONE
+            medalWeek.visibility = View.GONE
         }
         //ustawienie widoku na listę rekordu dla każdego dnia tygodnia
         fun SetRecordsView(){
@@ -152,8 +145,8 @@ class MainActivity : AppCompatActivity() {
             timerStart.visibility = View.GONE
             currentDayOfWeek.visibility = View.VISIBLE
             recordList.visibility = View.VISIBLE
-            recordsPage.setBackgroundColor(Color.parseColor("#9b74fc"))
-            homePage.setBackgroundColor(Color.parseColor("#845AED"))
+            weekRecord.visibility = View.VISIBLE
+            medalWeek.visibility = View.VISIBLE
         }
         //czy czas na przerwę czy pracę
         fun ifBreakTime(){
@@ -271,6 +264,15 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> {}
             }
+            workDoneThisWeek = mostWorkOnMonday + mostWorkOnTuesday + mostWorkOnWednesday + mostWorkOnThursday + mostWorkOnFriday + mostWorkOnSaturday + mostWorkOnSunday
+            when(workDoneThisWeek){
+                in 0..19 -> medalWeek.setImageResource(R.drawable.nomedal)
+                in 20..39 -> medalWeek.setImageResource(R.drawable.bronzemedal)
+                in 40..79 -> medalWeek.setImageResource(R.drawable.silvermedal)
+                in 80..Int.MAX_VALUE -> medalWeek.setImageResource(R.drawable.goldmedal)
+
+            }
+            weekRecord.text = workDoneThisWeek.toString()
             editor.apply()
             recordStringBuilder.clear()
         }
@@ -280,6 +282,11 @@ class MainActivity : AppCompatActivity() {
             timerStart.setText("START")
             main.setBackgroundColor(Color.parseColor("#DED9FF"))
             timerStart.setBackgroundColor(Color.parseColor("#845AED"))
+            homePage.setBackgroundColor(Color.parseColor("#845AED"))
+            recordsPage.setBackgroundColor(Color.parseColor("#845AED"))
+            timerStart.setTextColor(Color.parseColor("#FFFFFF"))
+            homePage.setTextColor(Color.parseColor("#FFFFFF"))
+            recordsPage.setTextColor(Color.parseColor("#FFFFFF"))
         }
 
         //operacje do zrobienia przy otwarciu aplikacji
@@ -293,7 +300,7 @@ class MainActivity : AppCompatActivity() {
 
         //czasomierze
         //praca
-        val workTimer = object: CountDownTimer(3000/*1500000*/, 1000){
+        val workTimer = object: CountDownTimer(1500000, 1000){
             override fun onTick(millisUntilFinished: Long) {
                 SetTimer()
                 countdown = millisUntilFinished
@@ -325,11 +332,19 @@ class MainActivity : AppCompatActivity() {
                 workTimer.start()
                 main.setBackgroundColor(Color.parseColor("#FCBDDE"))
                 timerStart.setBackgroundColor(Color.parseColor("#FC5353"))
+                homePage.setBackgroundColor(Color.parseColor("#FC5353"))
+                recordsPage.setBackgroundColor(Color.parseColor("#FC5353"))
+
             }
             else{
                 breakTimer.start()
                 main.setBackgroundColor(Color.parseColor("#B3FCE8"))
                 timerStart.setBackgroundColor(Color.parseColor("#4CFA34"))
+                homePage.setBackgroundColor(Color.parseColor("#4CFA34"))
+                recordsPage.setBackgroundColor(Color.parseColor("#4CFA34"))
+                timerStart.setTextColor(Color.parseColor("#000000"))
+                homePage.setTextColor(Color.parseColor("#000000"))
+                recordsPage.setTextColor(Color.parseColor("#000000"))
             }
         }
 
